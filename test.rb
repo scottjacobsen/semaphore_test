@@ -5,6 +5,10 @@ require "fileutils"
 
 include FileUtils
 
+def assert_file filename
+  raise "Missing file #{filename}" unless File.exist? filename
+end
+
 def test
   Dir.mktmpdir do |first_dir|
     first_file_name = File.join(first_dir, "first.txt")
@@ -20,19 +24,15 @@ def test
 
       third_file_name = File.join(first_dir, "third.txt")
       cp first_file_name, third_file_name
+      cp "./fixture.txt", second_dir
 
-      if File.exist?(first_file_name)
-        puts "first exists"
-      end
-      if File.exist?(second_file_name)
-        puts "second exists"
-      end
-      if File.exist?(third_file_name)
-        puts "third exists"
-      end
+      assert_file first_file_name
+      assert_file second_file_name
+      assert_file third_file_name
+      assert_file File.join(second_dir, "fixture.txt")
+      puts "passed"
     end
   end
 end
 
 test
-exit(1)
