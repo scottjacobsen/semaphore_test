@@ -35,3 +35,4 @@ def test
 end
 
 test
+exit(1)
